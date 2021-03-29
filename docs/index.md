@@ -8,8 +8,17 @@ Yue Qiu\*, Shintaro Yamamoto\*, Kodai Nakashima, Ryota Suzuki, Kenji Iwata, Hiro
 \* Equal contribution.  
 [arXiv](https://arxiv.org/abs/2103.14146)
 
-\[BibTex(TBA)]
-
+If you find our work helpful, please cite the paper:
+```
+@misc{qiu2021describing,
+    title={Describing and Localizing Multiple Changes with Transformers},
+    author={Yue Qiu and Shintaro Yamamoto and Kodai Nakashima and Ryota Suzuki and Kenji Iwata and Hirokatsu Kataoka and Yutaka Satoh},
+    year={2021},
+    eprint={2103.14146},
+    archivePrefix={arXiv},
+    primaryClass={cs.CV}
+}
+```
 # Usage
 TBC
 
