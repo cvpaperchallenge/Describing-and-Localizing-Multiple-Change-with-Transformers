@@ -6,8 +6,8 @@ Change captioning tasks aim to detect changes in image pairs observed before and
 # Paper
 
 **Describing and Localizing Multiple Change with Transformers**
-Yue Qiu\*, Shintaro Yamamoto\*, Kodai Nakashima, Ryota Suzuki, Kenji Iwata, Hirokatsu Kataoka, Yutaka Satoh
-\* Equal contribution.  
+<br> Yue Qiu\*, Shintaro Yamamoto\*, Kodai Nakashima, Ryota Suzuki, Kenji Iwata, Hirokatsu Kataoka, Yutaka Satoh
+<br> \* Equal contribution.  
 [Download Paper (arXiv)](https://arxiv.org/abs/2103.14146)
 
 If you find our work helpful, please cite the paper:
