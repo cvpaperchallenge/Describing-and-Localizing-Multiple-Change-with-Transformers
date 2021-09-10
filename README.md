@@ -9,15 +9,12 @@
 **Present at ICCV2021.**
 
 ---
-## Dataset
-- Please download the dataset used in ICCV paper throught this url.
- 
+## Dataset 
 - If you want to create your own new multiple change captioning dataset, please go to the [dataset generation directory](https://github.com/cvpaperchallenge/Describing-and-Localizing-Multiple-Change-with-Transformers/tree/main/dataset_generation).
 
 ---
 ## Code
 - The code used in the paper can be found at this directory.
-- The code for dataset generation in the paper can be found here .
 ---
 ## Citation
 If you find our work helpful, please cite the paper:
