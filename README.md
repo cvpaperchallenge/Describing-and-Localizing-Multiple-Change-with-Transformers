@@ -10,7 +10,7 @@
 
 ---
 ## Dataset 
-- If you want to create your own new multiple change captioning dataset, please go to the [dataset generation directory](https://github.com/cvpaperchallenge/Describing-and-Localizing-Multiple-Change-with-Transformers/tree/main/dataset_generation).
+- Please find the dataset generation code here: [dataset generation directory](https://github.com/cvpaperchallenge/Describing-and-Localizing-Multiple-Change-with-Transformers/tree/main/dataset_generation).
 
 ---
 ## Code
