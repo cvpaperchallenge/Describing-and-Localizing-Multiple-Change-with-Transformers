@@ -5,139 +5,12 @@ from torch.nn.init import xavier_uniform_
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-class M_VAM(nn.Module):
-    """
-    M-VAM
-    from
-    Shi et al.
-    "Finding It at Another Side: A Viewpoint-Adapted Matching Encoder for Change Captioning"
-    ECCV 2020
-    """
-    def __init__(self):
-        super(M_VAM, self).__init__()
-
-        self.VAMCell = VAMCell()
-        self.pooling = nn.AdaptiveAvgPool1d(1)
-
-    def forward(self, img_feat1, img_feat2):
-        """
-        :param img_feat1, img_feat2: image feature (batch_size, feature_dim, h, w)
-        """
-        batch_size = img_feat1.size(0)
-        feature_dim = img_feat1.size(1)
-        h, w = img_feat1.size(2), img_feat1.size(3)
-
-        f_ba, f_bb = self.VAMCell(img_feat1, img_feat2)
-        f_ab, f_aa = self.VAMCell(img_feat2, img_feat1)
-
-        h_bb = f_bb + img_feat1.view(batch_size, feature_dim, -1)
-        h_ba = f_ba + (img_feat1 - img_feat2).view(batch_size, feature_dim, -1)
-        h_ab = f_ab + (img_feat2 - img_feat1).view(batch_size, feature_dim, -1)
-        
-        output = torch.cat([h_bb,h_ba,h_ab], dim = 1).view(batch_size, feature_dim*3, -1).permute(2,0,1)
-
-        return output
-
-class VAMCell(nn.Module):
-    """
-    VAM Cell
-    """
-    def __init__(self):
-        """
-        """
-        super(VAMCell, self).__init__()
-
-        self.softmax = nn.Softmax(dim=1)
-        self.linear = nn.Linear(1, 1)
-        self.sigmoid = nn.Sigmoid()
-
-    def forward(self, img_feat1, img_feat2):
-        """
-        :param img_feat1, img_feat2: image feature (batch_size, feature_dim, h, w)
-        """
-        batch_size = img_feat1.size(0)
-        feature_dim = img_feat1.size(1)
-        h, w = img_feat1.size(2), img_feat1.size(3)
-
-        img_feat1 = img_feat1.view(batch_size, feature_dim, -1)
-        img_feat2 = img_feat2.view(batch_size, feature_dim, -1)
-
-        E = torch.bmm(img_feat1.permute(0, 2, 1), img_feat2) #(batch, wh, wh) dim1: img_feat1, dim2:img_feat2
-
-        #equation (2) in original paper
-        f_sb = torch.bmm(img_feat2, self.softmax(E).permute(0, 2, 1))  #(batch, feature_dim, wh)  #### ???
-
-        #equation (3) and (4) in original paper
-        U = self.sigmoid(self.linear(E.unsqueeze(3)).squeeze(3)) #(batch, wh, wh)
-        U = torch.max(U, dim = 2)[0] #(batch, wh)
-        C = 1. - U
-        
-        #equation (5)
-        f_bb = f_sb * U.unsqueeze(1) #(batch, feature_dim, wh)
-        #equation (6)
-        f_ba = (img_feat2 - f_sb) * C.unsqueeze(1) #(batch, feature_dim, wh)
-        
-        return f_ba, f_bb
 
 
-class DualAttention(nn.Module):
+
+class MCCFormers_S(nn.Module):
   """
-  Dual attention network.
-  """
-
-  def __init__(self, attention_dim, feature_dim):
-    """
-    """
-    super(DualAttention, self).__init__()
-    self.conv1 = nn.Conv2d(feature_dim*2, attention_dim, kernel_size=1, padding=0)
-    self.relu = nn.ReLU()
-    self.conv2 = nn.Conv2d(attention_dim, 1, kernel_size=1, padding=0)
-    self.sigmoid = nn.Sigmoid()
-
-  def forward(self, img_feat1, img_feat2):
-    # img_feat1 (batch_size, feature_dim, h, w)
-    batch_size = img_feat1.size(0)
-    feature_dim = img_feat1.size(1) #######
-    
-    img_diff = img_feat2 - img_feat1
-
-    img_feat1_d = torch.cat([img_feat1, img_diff], dim=1)
-    img_feat2_d = torch.cat([img_feat2, img_diff], dim=1)
-
-    img_feat1_d = self.conv1(img_feat1_d)
-    img_feat2_d = self.conv1(img_feat2_d)
-
-    img_feat1_d = self.relu(img_feat1_d)
-    img_feat2_d = self.relu(img_feat2_d)
-
-    img_feat1_d = self.conv2(img_feat1_d)
-    img_feat2_d = self.conv2(img_feat2_d)
-    
-    # To this point
-    # img_feat1, img_feat2 have dimension
-    # (batch_size, hidden_dim, h, w)
-
-    alpha_img1 = self.sigmoid(img_feat1_d)
-    alpha_img2 = self.sigmoid(img_feat2_d)
-
-    # To this point
-    # alpha_img1, alpha_img2 have dimension
-    # (batch_size, 1, h, w)
-
-    ########################## TODO #####
-
-    img_feat1 = img_feat1*(alpha_img1.expand_as(img_feat1))
-    img_feat2 = img_feat2*(alpha_img2.expand_as(img_feat2))
-    
-    img_output = torch.cat([img_feat1,img_feat2], dim = 1).view(batch_size,2048,-1).permute(2,0,1)
-
-
-    return img_output
-
-
-class VisualTransformer(nn.Module):
-  """
-  Transformer
+  MCCFormers-S
   """
 
   def __init__(self, feature_dim, h, w, d_model = 512, n_head = 4, n_layers = 2, dim_feedforward = 2048):
@@ -150,7 +23,7 @@ class VisualTransformer(nn.Module):
     :param h: height of input image
     :param w: width of input image
     """
-    super(VisualTransformer, self).__init__()
+    super(MCCFormers_S, self).__init__()
 
     self.input_proj = nn.Conv2d(feature_dim, d_model, kernel_size = 1)
 
@@ -249,10 +122,9 @@ class CrossTransformer(nn.Module):
 
     return output
 
-class MHAFF(nn.Module):
+class MCCFormers_D(nn.Module):
   """
-  Multi-head attention with feed forward network for scene change detection
-  * single-head attention in initial setting
+  MCCFormers-S
   """
   def __init__(self, feature_dim, dropout, h, w, d_model = 512, n_head = 4, n_layers = 2):
     """
@@ -484,9 +356,3 @@ class PlainDecoder(nn.Module):
 
 
     return predictions, encoded_captions, decode_lengths, sort_ind
-
-
-
-
-
-
