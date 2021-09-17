@@ -124,7 +124,7 @@ class CrossTransformer(nn.Module):
 
 class MCCFormers_D(nn.Module):
   """
-  MCCFormers-S
+  MCCFormers-D
   """
   def __init__(self, feature_dim, dropout, h, w, d_model = 512, n_head = 4, n_layers = 2):
     """
