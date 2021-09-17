@@ -6,7 +6,7 @@ import torch.utils.data
 
 from torch import nn
 from torch.nn.utils.rnn import pack_padded_sequence
-from models_trans import MHAFF, VisualTransformer, DecoderTransformer, PlainDecoder, M_VAM, DualAttention
+from models_trans import MCCFormers_D, MCCFormers_D, MCCFormers_S, DecoderTransformer, PlainDecoder
 from datasets import *
 from utils import *
 from nltk.translate.bleu_score import corpus_bleu ##--
@@ -58,17 +58,11 @@ def main(args):
     word_map = json.load(f)
 
   # Initialize
-  if args.encoder == 'MHAFF':
-    encoder = MHAFF(feature_dim = 1024,dropout=0.5,h=16,w=16,d_model=512,n_head=args.n_head,n_layers=args.n_layers).to(device)
+  if args.encoder == 'MCCFormers-D':
+    encoder = MCCFormers_D(feature_dim = 1024,dropout=0.5,h=16,w=16,d_model=512,n_head=args.n_head,n_layers=args.n_layers).to(device)
 
-  if args.encoder == 'VIT':
-    encoder = VisualTransformer(feature_dim = 1024,h=16,w=16, n_head=args.n_head,n_layers=args.n_layers).to(device)
-
-  if args.encoder == 'DUDA':
-    encoder = DualAttention(attention_dim=args.attention_dim, feature_dim = args.feature_dim).to(device)
-
-  if args.encoder == 'VAM':
-    encoder = M_VAM().to(device)
+  if args.encoder == 'MCCFormers-S':
+    encoder = MCCFormers_S(feature_dim = 1024,h=16,w=16, n_head=args.n_head,n_layers=args.n_layers).to(device)
 
   if args.decoder == 'trans':
     decoder = DecoderTransformer(feature_dim = args.feature_dim_de,
@@ -185,7 +179,7 @@ if __name__=='__main__':
   parser.add_argument('--hidden_dim', type=int, default=512)
   parser.add_argument('--attention_dim', type=int, default=512)
   parser.add_argument('--epochs', type=int, default=41)
-  parser.add_argument('--encoder', default='MHAFF')
+  parser.add_argument('--encoder', default='MCCFormers-D')
   parser.add_argument('--decoder', default='trans')
   parser.add_argument('--n_head', type=int, default=4)
   parser.add_argument('--n_layers', type=int, default=2)
@@ -196,9 +190,3 @@ if __name__=='__main__':
   args = parser.parse_args()
 
   main(args)
-
-
-
-
-
-
