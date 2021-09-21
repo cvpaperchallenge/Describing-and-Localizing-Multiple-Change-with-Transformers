@@ -4,5 +4,11 @@
 
 - You can generate your own multiple change captioning dataset using the code inside this directory.
 
+## Install blender
 
+- Before dataset generation, please install the [blender](https://www.blender.org/)
+
+- Follow the steps described in [CLEVR]（https://github.com/facebookresearch/clevr-dataset-gen） for blender setup.
+
+## Generate change images
 
