@@ -16,12 +16,3 @@ Run the following code for generating change pairs.
 ```
 bash generate_images.sh
 ```
-
-## Generate change captions
-
-Run the following code for generating change captions.  
-
-```
-TODO
-```
-
