@@ -8,7 +8,7 @@
 
 - Before dataset generation, please install the [blender](https://www.blender.org/)
 
-- Follow the steps described in [CLEVR]（https://github.com/facebookresearch/clevr-dataset-gen） for blender setup.
+- Follow the steps described in [CLEVR](https://github.com/facebookresearch/clevr-dataset-gen) for blender setup.
 
 ## Generate change images
 Run the following code for generating change pairs.  
