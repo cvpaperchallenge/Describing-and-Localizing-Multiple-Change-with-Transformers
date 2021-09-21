@@ -11,4 +11,10 @@
 - Follow the steps described in [CLEVR]（https://github.com/facebookresearch/clevr-dataset-gen） for blender setup.
 
 ## Generate change images
+Run the following code for generating change pairs.  
+
+```
+bash generate_images.sh
+```
+
 
