@@ -18,7 +18,7 @@ bash generate_images.sh
 ```
 
 ## Generate change captioning
-Run the following code for generating change pairs.  
+Run the following code for generating change captioning.
 
 ```
 python generate_captions.py
