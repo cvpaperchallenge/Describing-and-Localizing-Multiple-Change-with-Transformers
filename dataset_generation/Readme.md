@@ -16,3 +16,10 @@ Run the following code for generating change pairs.
 ```
 bash generate_images.sh
 ```
+
+## Generate change captioning
+Run the following code for generating change pairs.  
+
+```
+python generate_captions.py
+```
