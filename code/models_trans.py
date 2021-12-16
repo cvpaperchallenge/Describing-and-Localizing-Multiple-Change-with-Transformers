@@ -81,7 +81,7 @@ class MCCFormers_S(nn.Module):
     img_feat2 = feature[h*w:].permute(1, 2, 0)  #(batch, d_model, h*w)
     img_feat2 = img_feat2.view(batch, d_model, -1).permute(2, 0, 1) #(batch, d_model, h*w)
 
-    img_feat = torch.cat([img_feat1,img_feat1],dim=2)
+    img_feat = torch.cat([img_feat1,img_feat2],dim=2)
 
     return img_feat
 
